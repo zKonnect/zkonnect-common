@@ -1,0 +1,3 @@
+[submodule "zkonnect-contract"]
+	path = zkonnect-contract
+	url = git@github.com:zKonnect/zkonnect-contract.git

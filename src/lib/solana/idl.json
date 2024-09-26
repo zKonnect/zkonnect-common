@@ -1,0 +1,383 @@
+{
+  "address": "D57msu1skRML54zj1pfZ2fzewCx9UPveeT29hys94jrk",
+  "metadata": {
+    "name": "zkonnect",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "close_account",
+      "discriminator": [125, 255, 149, 14, 110, 34, 72, 24],
+      "accounts": [
+        {
+          "name": "account",
+          "writable": true
+        },
+        {
+          "name": "receiver",
+          "writable": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "create_event",
+      "discriminator": [49, 219, 29, 203, 22, 98, 100, 87],
+      "accounts": [
+        {
+          "name": "creator",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "merkle_tree",
+          "writable": true
+        },
+        {
+          "name": "collection_nft",
+          "writable": true
+        },
+        {
+          "name": "event",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [122, 107, 111, 110, 110, 101, 99, 116]
+              },
+              {
+                "kind": "account",
+                "path": "creator"
+              },
+              {
+                "kind": "arg",
+                "path": "event_name"
+              }
+            ]
+          }
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "event_name",
+          "type": "string"
+        },
+        {
+          "name": "creator_name",
+          "type": "string"
+        },
+        {
+          "name": "creator_domain",
+          "type": "string"
+        },
+        {
+          "name": "event_description",
+          "type": "string"
+        },
+        {
+          "name": "banner",
+          "type": "string"
+        },
+        {
+          "name": "date_time",
+          "type": "u64"
+        },
+        {
+          "name": "location",
+          "type": "string"
+        },
+        {
+          "name": "nfturi",
+          "type": "string"
+        },
+        {
+          "name": "ticket_price",
+          "type": "u64"
+        },
+        {
+          "name": "total_tickets",
+          "type": "u8"
+        },
+        {
+          "name": "pay_sol",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "pay_for_ticket",
+      "discriminator": [53, 4, 206, 92, 229, 69, 100, 83],
+      "accounts": [
+        {
+          "name": "from",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "to",
+          "writable": true
+        },
+        {
+          "name": "mint",
+          "relations": ["event"]
+        },
+        {
+          "name": "from_ata",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "from"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
+                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
+                  245, 133, 126, 255, 0, 169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
+              ]
+            }
+          }
+        },
+        {
+          "name": "to_ata",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "to"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
+                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
+                  245, 133, 126, 255, 0, 169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
+              ]
+            }
+          }
+        },
+        {
+          "name": "event",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [122, 107, 111, 110, 110, 101, 99, 116]
+              },
+              {
+                "kind": "account",
+                "path": "to"
+              },
+              {
+                "kind": "account",
+                "path": "event.event_name",
+                "account": "Event"
+              }
+            ]
+          }
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "pay_sol_for_ticket",
+      "discriminator": [19, 209, 155, 74, 199, 137, 84, 149],
+      "accounts": [
+        {
+          "name": "from",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "to",
+          "writable": true
+        },
+        {
+          "name": "event",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [122, 107, 111, 110, 110, 101, 99, 116]
+              },
+              {
+                "kind": "account",
+                "path": "to"
+              },
+              {
+                "kind": "account",
+                "path": "event.event_name",
+                "account": "Event"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Event",
+      "discriminator": [125, 192, 125, 158, 9, 115, 152, 233]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "PaySolNotEnabled",
+      "msg": "Pay Sol not enabled"
+    },
+    {
+      "code": 6001,
+      "name": "TicketSoldOut",
+      "msg": "Ticket sold out"
+    },
+    {
+      "code": 6002,
+      "name": "PayOnlySol",
+      "msg": "Only SOL is accepted"
+    }
+  ],
+  "types": [
+    {
+      "name": "Event",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "merkle_tree",
+            "type": "pubkey"
+          },
+          {
+            "name": "collection_nft",
+            "type": "pubkey"
+          },
+          {
+            "name": "creator_name",
+            "type": "string"
+          },
+          {
+            "name": "creator_domain",
+            "type": "string"
+          },
+          {
+            "name": "event_name",
+            "type": "string"
+          },
+          {
+            "name": "event_description",
+            "type": "string"
+          },
+          {
+            "name": "banner",
+            "type": "string"
+          },
+          {
+            "name": "date_time",
+            "type": "u64"
+          },
+          {
+            "name": "location",
+            "type": "string"
+          },
+          {
+            "name": "nfturi",
+            "type": "string"
+          },
+          {
+            "name": "ticket_price",
+            "type": "u64"
+          },
+          {
+            "name": "tickets_sold",
+            "type": "u8"
+          },
+          {
+            "name": "total_tickets",
+            "type": "u8"
+          },
+          {
+            "name": "pay_sol",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ]
+}

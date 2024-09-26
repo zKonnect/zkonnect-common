@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+  binaryTargets   = ["native", "debian-openssl-3.0.x", "linux-arm64-openssl-1.1.x", "rhel-openssl-1.0.x", "linux-musl-arm64-openssl-3.0.x", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Creator {
+  id                String   @id @default(cuid())
+  creatorName       String
+  walletAddress     String   @unique
+  domainOfExpertise String
+  eventsInaYear     Int
+  noOfFollowers     Int      @default(0)
+  isVerified        Boolean  @default(false)
+  Events            Events[]
+}
+
+model Events {
+  id                String   @id @default(cuid())
+  roomId            String   @unique
+  eventName         String
+  eventDesc         String
+  eventBanner       String
+  eventDate         DateTime
+  totalTickets      Float
+  ticketPrice       Float
+  nativeToken       String
+  meetLink          String
+  blink             String
+  hostWalletAddress String
+  collectionAddress String?
+  creatorId         String
+  eventCreator      Creator  @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+}
