@@ -16,8 +16,15 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
 import { SigninMessage } from "@/lib/SignInMessage";
 import { shortenWalletAddress } from "@/lib/functions";
+import { cn } from "@/lib/utils";
 
-export default function WalletConnectButton() {
+export default function WalletConnectButton({
+  classnames,
+  len,
+}: {
+  classnames?: string;
+  len?: number;
+}) {
   const {
     publicKey,
     connecting,
@@ -107,22 +114,33 @@ export default function WalletConnectButton() {
     handleWalletDisconnect();
   }, [connected]);
 
-  const getButtonText = () => {
+  const getButtonText = (length?: number) => {
     if (status === "loading" || isSigningIn) return "Connecting...";
     if (!publicKey) return "Connect Wallet";
+
+    if (length) {
+      return shortenWalletAddress(publicKey.toString(), length);
+    }
 
     return shortenWalletAddress(publicKey.toString());
   };
 
   return (
     <WalletMultiButton>
-      <div className="flex flex-row items-center justify-normal space-x-4">
+      <div
+        className={cn(
+          "flex flex-row items-center justify-normal space-x-4 text-xs lg:text-sm",
+          classnames,
+        )}
+      >
         {!publicKey &&
           !connecting &&
           !connected &&
           !disconnecting &&
           !wallet && <Wallet className="size-6" />}
-        <p className="whitespace-nowrap text-sm">{getButtonText()}</p>
+        <p className="w-full whitespace-nowrap text-center">
+          {getButtonText(len)}
+        </p>
       </div>
     </WalletMultiButton>
   );

@@ -42,7 +42,7 @@ const Navbar = ({
       )}
       ref={menuRef}
     >
-      <div className="mx-auto flex w-full max-w-[1600px] items-center px-6 2xl:px-0">
+      <div className="mx-auto flex w-full max-w-[1600px] items-center px-6 2xl:px-2">
         <Link
           href="/"
           className={`${requireLogo ? "block min-w-fit" : "hidden"}`}

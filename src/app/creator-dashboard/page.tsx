@@ -16,9 +16,9 @@ export const metadata = constructMetaData({
 
 const CreatorDashboardPage = () => {
   return (
-    <section className="mx-auto max-w-[1600px] px-6 py-6 2xl:px-0">
-      <div className="mb-6 mt-24 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-black">Dashboard</h1>
+    <section className="mx-auto max-w-[1600px] px-6 py-6 2xl:px-2">
+      <div className="mb-6 flex items-center justify-between pt-24">
+        <h1 className="text-2xl font-bold text-black lg:text-3xl">Dashboard</h1>
         <Link href="/create-event">
           <Button className="space-x-6 bg-black px-5 py-5 text-sm">
             <span>Create event</span>

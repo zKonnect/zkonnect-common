@@ -103,7 +103,7 @@ export default function Page() {
   }, [wallet.connected]);
 
   return (
-    <section className="flex min-h-screen flex-col items-center px-6 pt-32 text-black 2xl:px-0">
+    <section className="flex min-h-screen flex-col items-center px-6 pt-32 text-black 2xl:px-2">
       <div className="z-10 w-full max-w-[1600px] flex-col items-center justify-between text-sm">
         <div className="space-y-4">
           <h1 className="text-2xl font-semibold">Event Title</h1>

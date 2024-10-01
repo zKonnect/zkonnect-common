@@ -30,7 +30,7 @@ const Navbar = ({ requireLogin = true }: { requireLogin?: boolean }) => {
   return (
     <nav
       className={cn(
-        "fixed top-0 z-[99999] flex w-full items-center px-6 py-3 2xl:px-0",
+        "fixed top-0 z-[99999] flex w-full items-center px-6 py-3 2xl:px-2",
         scrolled && "border-b bg-zkonnect-white-origin shadow-sm",
       )}
       ref={menuRef}

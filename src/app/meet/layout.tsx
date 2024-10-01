@@ -4,7 +4,7 @@ import { HuddleClient, HuddleProvider } from "@huddle01/react";
 
 import Navbar from "@/components/Common/Navbar";
 
-const TokenLoginLayout = ({ children }: { children: React.ReactNode }) => {
+const MeetLayout = ({ children }: { children: React.ReactNode }) => {
   const huddleClient = new HuddleClient({
     projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
   });
@@ -18,4 +18,4 @@ const TokenLoginLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default TokenLoginLayout;
+export default MeetLayout;
