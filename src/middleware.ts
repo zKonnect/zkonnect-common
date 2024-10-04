@@ -6,7 +6,6 @@ const protectedPaths = [
   "/api/ipfsUpload",
   "/api/createMerkleTree",
   "/api/createCollectionNft",
-  "/api/getAccessToken",
 ];
 
 export async function middleware(request: NextRequest) {
@@ -56,6 +55,5 @@ export const config = {
     "/api/ipfsUpload",
     "/api/createMerkleTree",
     "/api/createCollectionNft",
-    "/api/getAccessToken",
   ],
 };

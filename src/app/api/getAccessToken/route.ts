@@ -13,7 +13,7 @@ type MetaData = {
   title: string;
   chain: string;
   tokenType: string;
-  collectionAddress: string;
+  hostWalletAddress: string;
 };
 
 export async function POST(request: NextRequest) {
@@ -88,22 +88,24 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  const isHost = address === roomDetails.hostWalletAddress;
+
   const accessToken = new AccessToken({
     apiKey: process.env.API_KEY!,
     roomId: roomId as string,
-    role: Role.HOST,
+    role: isHost ? Role.HOST : Role.GUEST,
     permissions: {
-      admin: true,
+      admin: isHost ? true : false,
       canConsume: true,
       canProduce: true,
       canProduceSources: {
         cam: true,
-        mic: true,
-        screen: true,
+        mic: isHost ? true : false,
+        screen: isHost ? true : false,
       },
-      canRecvData: true,
+      canRecvData: isHost ? true : false,
       canSendData: true,
-      canUpdateMetadata: true,
+      canUpdateMetadata: isHost ? true : false,
     },
     options: {
       metadata: {

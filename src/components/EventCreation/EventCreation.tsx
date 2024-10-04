@@ -42,6 +42,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import UploadDropzone from "@/components/Common/UploadDropzone";
+import { TimePickerDemo } from "@/components/ui/DateTime/time-picker-demo";
 import { usePreview } from "@/hooks/use-preview";
 import { useZkonnect } from "@/hooks/useZkonnect";
 import { createEventAction, getCreatorDataAction } from "@/actions";
@@ -119,7 +120,7 @@ const EventCreation = () => {
                 await getCreatorDataAction(wallet.publicKey!.toString());
 
               const roomIdData = await fetch(
-                `/api/createRoom?title=${values.eventName}&hostWallet=${wallet.publicKey!.toString()}`,
+                `/api/createRoom?title=${values.eventName}&hostWallet=${wallet.publicKey!.toString()}&dateTime=${values.eventDate.getTime().toString()}`,
               );
 
               const roomId = await roomIdData
@@ -294,7 +295,7 @@ const EventCreation = () => {
           name="eventDate"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>Date of Event</FormLabel>
+              <FormLabel>Date & Time of Event</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -308,7 +309,7 @@ const EventCreation = () => {
                       {field.value ? (
                         format(field.value, "PPP")
                       ) : (
-                        <span>Pick a date</span>
+                        <span>Pick a date & time</span>
                       )}
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
@@ -319,9 +320,14 @@ const EventCreation = () => {
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
-                    disabled={(date: any) => date < new Date()}
-                    className="rounded-md border shadow"
+                    initialFocus
                   />
+                  <div className="border-t border-border p-3">
+                    <TimePickerDemo
+                      setDate={field.onChange}
+                      date={field.value}
+                    />
+                  </div>
                 </PopoverContent>
               </Popover>
               <FormDescription>
