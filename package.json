@@ -26,7 +26,7 @@
   "dependencies": {
     "@coral-xyz/anchor": "^0.30.1",
     "@hookform/resolvers": "^3.6.0",
-    "@huddle01/react": "^2.1.7",
+    "@huddle01/react": "^2.1.8",
     "@huddle01/server-sdk": "^2.5.2",
     "@metaplex-foundation/digital-asset-standard-api": "^1.0.3",
     "@metaplex-foundation/js": "^0.20.1",

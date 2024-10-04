@@ -41,7 +41,6 @@ export async function GET(req: NextRequest) {
 
         await reclaimClient.startSession({
           onSuccessCallback: async (proofs) => {
-            console.log(proofs[0]);
             data.verified = await Reclaim.verifySignedProof(proofs[0]);
 
             data.followers = JSON.parse(

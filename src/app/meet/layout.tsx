@@ -1,8 +1,7 @@
 "use client";
 
-import { HuddleClient, HuddleProvider } from "@huddle01/react";
-
 import Navbar from "@/components/Common/Navbar";
+import { HuddleClient, HuddleProvider } from "@huddle01/react";
 
 const MeetLayout = ({ children }: { children: React.ReactNode }) => {
   const huddleClient = new HuddleClient({
@@ -10,9 +9,9 @@ const MeetLayout = ({ children }: { children: React.ReactNode }) => {
   });
   return (
     <HuddleProvider client={huddleClient}>
-      <div className="h-full bg-[#F7F7F7]">
-        <Navbar requireLogo={true} />
-        <main className="h-screen bg-[#F7F7F7]">{children}</main>
+      <div className="h-full bg-zkonnect-white-origin">
+        <Navbar requireLogo={true} requireLogin={false} />
+        <main className="h-screen bg-zkonnect-white-origin">{children}</main>
       </div>
     </HuddleProvider>
   );
