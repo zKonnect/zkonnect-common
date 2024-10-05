@@ -6,6 +6,7 @@ import {
   useRemoteScreenShare,
   useRemoteVideo,
 } from "@huddle01/react/hooks";
+import useAudioStore from "@/store/useAudioStore";
 
 type Props = {
   peerId: string;
@@ -28,6 +29,15 @@ const GuestPeer = ({ peerId }: Props) => {
   const screenVideoRef = useRef<HTMLVideoElement>(null);
   const screenAudioRef = useRef<HTMLAudioElement>(null);
 
+  // Zustand store to set audioStream
+  const setAudioStream = useAudioStore((state) => state.setAudioStream);
+
+  useEffect(() => {
+    if (audioStream && audioState === "playable") {
+      setAudioStream(audioStream);
+    }
+  }, [audioStream, audioState, setAudioStream]);
+
   useEffect(() => {
     if (stream && vidRef.current && state === "playable") {
       vidRef.current.srcObject = stream;
@@ -46,23 +56,23 @@ const GuestPeer = ({ peerId }: Props) => {
     }
   }, [stream]);
 
-  useEffect(() => {
-    if (audioStream && audioRef.current && audioState === "playable") {
-      audioRef.current.srcObject = audioStream;
+  // useEffect(() => {
+  //   if (audioStream && audioRef.current && audioState === "playable") {
+  //     audioRef.current.srcObject = audioStream;
 
-      audioRef.current.onloadedmetadata = async () => {
-        try {
-          audioRef.current?.play();
-        } catch (error) {
-          console.error(error);
-        }
-      };
+  //     audioRef.current.onloadedmetadata = async () => {
+  //       try {
+  //         audioRef.current?.play();
+  //       } catch (error) {
+  //         console.error(error);
+  //       }
+  //     };
 
-      audioRef.current.onerror = () => {
-        console.error("videoCard() | Error is hapenning...");
-      };
-    }
-  }, [audioStream]);
+  //     audioRef.current.onerror = () => {
+  //       console.error("videoCard() | Error is hapenning...");
+  //     };
+  //   }
+  // }, [audioStream]);
 
   useEffect(() => {
     if (screenVideo && screenVideoRef.current) {
@@ -112,6 +122,9 @@ const GuestPeer = ({ peerId }: Props) => {
           </span>
         </div>
       )}
+
+      <audio ref={audioRef} autoPlay />
+
       {stream && (
         <div className="relative aspect-video max-h-[calc(100vh-17vh)] w-full rounded-lg bg-[#D9D9D9]/40">
           <video

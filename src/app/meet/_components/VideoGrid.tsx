@@ -1,5 +1,8 @@
+import React, { useEffect, useRef, useState } from "react";
+
 import { cn } from "@/lib/utils";
 
+import useAudioStore from "@/store/useAudioStore";
 import ChatBox from "./ChatBox/ChatBox";
 import GuestPeer from "./GuestPeer";
 import HostPeer from "./HostPeer";
@@ -17,6 +20,7 @@ const VideoGrid = ({
   remoteData,
   currentPeerId,
 }: any) => {
+  const [remoteHostGrid, setRemoteHostGrid] = useState<string>();
   const calculateHostGridSize = () => {
     const count = (localStream ? 1 : 0) + (screenShare ? 1 : 0);
     if (count <= 1) return "grid-cols-1";
@@ -38,6 +42,27 @@ const VideoGrid = ({
     return `${!chatOpen ? "grid-cols-4" : "grid-cols-5"}`;
   };
 
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const audioStream = useAudioStore((state) => state.audioStream);
+
+  useEffect(() => {
+    if (audioStream && audioRef.current) {
+      audioRef.current.srcObject = audioStream;
+
+      audioRef.current.onloadedmetadata = async () => {
+        try {
+          audioRef.current?.play();
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      audioRef.current.onerror = () => {
+        console.error("VideoGrid() | Error is happening...");
+      };
+    }
+  }, [audioStream]);
+
   // Calculate grid size dynamically
   // const calculateGridSize2 = () => {
   //   const itemsCount =
@@ -47,9 +72,10 @@ const VideoGrid = ({
 
   return (
     <div className={cn("flex h-[100%] space-x-2", !chatOpen && "h-[90%]")}>
+      <audio ref={audioRef} autoPlay />
       <div
         className={cn(
-          `grid gap-2 ${currentPage === 0 ? calculateHostGridSize() : calculateGridSize()} h-[90%] w-[100%]`,
+          `grid gap-2 ${role === "guest" ? (currentPage === 0 ? remoteHostGrid : calculateGridSize()) : currentPage === 0 ? calculateHostGridSize() : calculateGridSize()} h-[90%] w-[100%]`,
           !chatOpen && "h-[100%] w-[90%]",
         )}
       >
@@ -143,6 +169,7 @@ const VideoGrid = ({
                 peerId={peerId}
                 key={index}
                 remoteParticipantsLength={remoteData.length}
+                setRemoteHostGrid={setRemoteHostGrid}
               />
             ))
           ) : (

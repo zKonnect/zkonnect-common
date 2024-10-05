@@ -8,21 +8,26 @@ import {
 } from "@huddle01/react/hooks";
 
 import { cn } from "@/lib/utils";
+import useAudioStore from "@/store/useAudioStore";
 
 type Props = {
   peerId: string;
   remoteParticipantsLength: number;
+  setRemoteHostGrid: React.Dispatch<React.SetStateAction<string | undefined>>;
 };
 
 type Metadata = {
   displayName?: string;
 };
 
-const HostPeer = ({ peerId, remoteParticipantsLength }: Props) => {
+const HostPeer = ({
+  peerId,
+  remoteParticipantsLength,
+  setRemoteHostGrid,
+}: Props) => {
   const { metadata } = useRemotePeer<Metadata>({
     peerId,
   });
-
   const { stream, state } = useRemoteVideo({ peerId });
   const { stream: audioStream, state: audioState } = useRemoteAudio({
     peerId,
@@ -33,6 +38,14 @@ const HostPeer = ({ peerId, remoteParticipantsLength }: Props) => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const screenVideoRef = useRef<HTMLVideoElement>(null);
   const screenAudioRef = useRef<HTMLAudioElement>(null);
+
+  const setAudioStream = useAudioStore((state) => state.setAudioStream);
+
+  useEffect(() => {
+    if (audioStream && audioState === "playable") {
+      setAudioStream(audioStream);
+    }
+  }, [audioStream, audioState, setAudioStream]);
 
   useEffect(() => {
     if (stream && vidRef.current && state === "playable") {
@@ -52,23 +65,23 @@ const HostPeer = ({ peerId, remoteParticipantsLength }: Props) => {
     }
   }, [stream]);
 
-  useEffect(() => {
-    if (audioStream && audioRef.current && audioState === "playable") {
-      audioRef.current.srcObject = audioStream;
+  // useEffect(() => {
+  //   if (audioStream && audioRef.current && audioState === "playable") {
+  //     audioRef.current.srcObject = audioStream;
 
-      audioRef.current.onloadedmetadata = async () => {
-        try {
-          audioRef.current?.play();
-        } catch (error) {
-          console.error(error);
-        }
-      };
+  //     audioRef.current.onloadedmetadata = async () => {
+  //       try {
+  //         audioRef.current?.play();
+  //       } catch (error) {
+  //         console.error(error);
+  //       }
+  //     };
 
-      audioRef.current.onerror = () => {
-        console.error("videoCard() | Error is hapenning...");
-      };
-    }
-  }, [audioStream]);
+  //     audioRef.current.onerror = () => {
+  //       console.error("videoCard() | Error is hapenning...");
+  //     };
+  //   }
+  // }, [audioStream]);
 
   useEffect(() => {
     if (screenVideo && screenVideoRef.current) {
@@ -106,6 +119,30 @@ const HostPeer = ({ peerId, remoteParticipantsLength }: Props) => {
     }
   }, [screenAudio]);
 
+  const calculateRemoteHostGridSize = ({
+    remoteStream,
+    remoteScreenShare,
+  }: any) => {
+    const count = (remoteStream ? 1 : 0) + (remoteScreenShare ? 1 : 0);
+    if (count <= 1) return "grid-cols-1";
+    else if (count === 2)
+      return `${remoteStream && remoteScreenShare ? "grid-cols-3" : "grid-cols-2"}`;
+    else if (count === 3) return "grid-cols-3";
+    else if (count <= 4) return "grid-cols-2";
+    else if (count <= 9) return "grid-cols-4";
+  };
+
+  useEffect(() => {
+    if (stream || screenVideo) {
+      setRemoteHostGrid(
+        calculateRemoteHostGridSize({
+          remoteStream: stream,
+          remoteScreenShare: screenVideo,
+        }),
+      );
+    }
+  }, [stream, screenVideo]);
+
   return (
     <>
       {(peerId === "" || !peerId || metadata === null) && (
@@ -126,6 +163,9 @@ const HostPeer = ({ peerId, remoteParticipantsLength }: Props) => {
           </span>
         </div>
       )}
+
+      <audio ref={audioRef} autoPlay></audio>
+      {screenAudio && <audio ref={screenAudioRef} autoPlay></audio>}
 
       {screenVideo && (
         <div

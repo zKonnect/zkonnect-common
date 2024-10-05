@@ -13,6 +13,7 @@ import {
   Mic,
   MicOff,
   MonitorUp,
+  PhoneOff,
   Video,
   VideoOff,
 } from "lucide-react";
@@ -55,7 +56,7 @@ export default function Page() {
   const params = useParams();
   const router = useRouter();
 
-  const { joinRoom, state } = useRoom({
+  const { joinRoom, state, leaveRoom } = useRoom({
     onJoin: (room) => {
       console.log("onJoin", room);
       updateMetadata({ displayName });
@@ -160,7 +161,6 @@ export default function Page() {
 
   useEffect(() => {
     const location = window.location.href;
-    /*TODO: change this meet2 to meet later */
     const roomId = location.split("meet/")[1];
 
     if (wallet.connected && state === "idle") {
@@ -320,7 +320,7 @@ export default function Page() {
                     >
                       <MonitorUp />
                     </Button>
-                    <Button
+                    {/* <Button
                       size="default"
                       className={cn(
                         "group z-10 mx-2 rounded-md px-5 py-7 transition-all duration-500",
@@ -342,7 +342,7 @@ export default function Page() {
                       }}
                     >
                       <Disc2 />
-                    </Button>
+                    </Button> */}
                     <Button
                       size="default"
                       className={cn(
@@ -354,6 +354,16 @@ export default function Page() {
                       onClick={toggleChat}
                     >
                       <Inbox />
+                    </Button>
+                    <Button
+                      size="default"
+                      className="group z-10 mx-2 rounded-md bg-[#EA4336] px-5 py-7 text-white transition-all duration-500"
+                      onClick={() => {
+                        leaveRoom();
+                        router.push("/goodBye");
+                      }}
+                    >
+                      <PhoneOff />
                     </Button>
                   </div>
                   <div className="flex items-center space-x-1.5 text-muted-foreground">
