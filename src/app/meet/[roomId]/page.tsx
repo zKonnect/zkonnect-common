@@ -7,7 +7,6 @@ import Image from "next/image";
 import {
   ArrowRight,
   ChevronRight,
-  Disc2,
   Inbox,
   Loader2,
   Mic,

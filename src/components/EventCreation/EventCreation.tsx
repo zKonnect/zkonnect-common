@@ -74,8 +74,6 @@ const EventCreation = () => {
       eventDescription: "",
       eventDate: new Date(),
       bannerUrl: undefined,
-      ticketPrice: 0,
-      totalTickets: 1,
       nativePaymentToken: "USDC",
     },
   });
@@ -230,17 +228,17 @@ const EventCreation = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="font-medium text-black dark:text-white">
-                Event Name
+                Event Title
               </FormLabel>
               <FormControl>
                 <Input
                   placeholder="Eg. An Online Event - By John Doe"
                   {...field}
-                  className="h-[40px] w-full rounded-md text-black transition-all dark:text-white"
+                  className="h-[50px] w-full rounded-md text-black transition-all dark:text-white"
                 />
               </FormControl>
               <FormDescription>
-                The name of the event you want to create
+                The name of the event you want to create.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -258,11 +256,11 @@ const EventCreation = () => {
                 <Input
                   placeholder="Eg. A description of the event"
                   {...field}
-                  className="h-[40px] w-full rounded-md text-black transition-all dark:text-white"
+                  className="h-[50px] w-full rounded-md text-black transition-all dark:text-white"
                 />
               </FormControl>
               <FormDescription>
-                A brief description of the event you want to create
+                A brief description of the event you want to create.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -284,7 +282,7 @@ const EventCreation = () => {
                 />
               </FormControl>
               <FormDescription>
-                A banner image for the event you want to create
+                A banner image for the event you want to create.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -297,7 +295,7 @@ const EventCreation = () => {
             <FormItem className="flex flex-col">
               <FormLabel>Date & Time of Event</FormLabel>
               <Popover>
-                <PopoverTrigger asChild>
+                <PopoverTrigger asChild className="h-[50px]">
                   <FormControl>
                     <Button
                       variant={"outline"}
@@ -337,29 +335,7 @@ const EventCreation = () => {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="totalTickets"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="font-medium text-black">
-                Total Tickets
-              </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Eg. 100"
-                  {...field}
-                  className="h-[40px] w-full rounded-md text-black transition-all dark:text-white"
-                />
-              </FormControl>
-              <FormDescription>
-                The total number of tickets available for the event you want to
-                create
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+
         <div className="flex space-x-4">
           <FormField
             control={form.control}
@@ -373,7 +349,7 @@ const EventCreation = () => {
                   <Input
                     placeholder="Eg. 2"
                     {...field}
-                    className="h-[40px] w-full rounded-md text-black transition-all dark:text-white"
+                    className="h-[50px] w-full rounded-md text-black transition-all dark:text-white"
                   />
                 </FormControl>
                 <FormDescription>
@@ -394,7 +370,7 @@ const EventCreation = () => {
                   defaultValue={field.value}
                 >
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger className="h-[50px]">
                       <SelectValue placeholder="Select a token" />
                     </SelectTrigger>
                   </FormControl>
@@ -427,6 +403,28 @@ const EventCreation = () => {
             )}
           />
         </div>
+        <FormField
+          control={form.control}
+          name="totalTickets"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="font-medium text-black">
+                Total Tickets
+              </FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Eg. 100"
+                  {...field}
+                  className="h-[50px] w-full rounded-md text-black transition-all dark:text-white"
+                />
+              </FormControl>
+              <FormDescription>
+                Total number of tickets you want to sell for the event.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <ConfirmEvent
           disabled={!isValid}
@@ -443,30 +441,6 @@ const EventCreation = () => {
           walletAddr={wallet.publicKey?.toString()}
           newMeetUrl={meetUrl}
         />
-        {/* <label
-          className="cursor-pointer rounded-md bg-black p-2 text-center text-white"
-          onClick={() => {
-            closeAccount(allEvents[0].account.eventName)
-              .then(() => {
-                toast.success("Account closed successfully");
-              })
-              .catch(() => {
-                toast.error("Error closing account");
-              });
-          }}
-        >
-          Close Account
-        </label>
-        <label
-          className="cursor-pointer rounded-md bg-black p-2 text-center text-white"
-          onClick={async () => {
-            const data = await getAllCreatorAccounts();
-
-            setAllEvents(data);
-          }}
-        >
-          Get all
-        </label> */}
       </form>
     </Form>
   );
