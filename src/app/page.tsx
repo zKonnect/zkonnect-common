@@ -3,12 +3,10 @@
 import { useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-
-import { useWallet } from "@solana/wallet-adapter-react";
+import { useSession } from "next-auth/react";
 
 import WalletConnectButton from "@/components/Wallet/wallet-connect-button";
 import { getCreatorDataAction } from "@/actions";
-import { useSession } from "next-auth/react";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -39,7 +37,7 @@ export default function Home() {
           height={300}
           className="size-16"
         />
-        <h1 className="text-center text-2xl font-black text-black lg:text-3xl">
+        <h1 className="text-center text-2xl font-bold text-black lg:text-3xl">
           Welcome <br />
           to zKonnect
         </h1>
