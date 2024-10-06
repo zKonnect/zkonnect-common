@@ -6,6 +6,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "res.cloudinary.com",
       },
+      {
+        protocol: "https",
+        hostname: "pink-magnetic-panther-830.mypinata.cloud",
+      },
     ],
   },
   output: "standalone",

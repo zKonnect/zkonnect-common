@@ -1,4 +1,10 @@
+import { constructMetaData } from "@/lib/metadata";
 import Navbar from "@/components/Common/Navbar";
+
+export const metadata = constructMetaData({
+  title: "Dashboard | zKonnect",
+  description: "Creator Dashboard of zKonnect",
+});
 
 const CreatorSignupLayout = ({ children }: { children: React.ReactNode }) => {
   return (
