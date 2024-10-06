@@ -47,7 +47,9 @@ export function ConfirmEvent({
   const handleConfirm = async () => {
     onConfirm();
     setBlinkUrl(
-      `https://zkonnect.social/api/actions/buyTicket?eventName=${eventName}&address=${walletAddr}`,
+      encodeURI(
+        `https://zkonnect.social/api/actions/buyTicket?eventName=${eventName}&address=${walletAddr}`,
+      ),
     );
   };
   return (

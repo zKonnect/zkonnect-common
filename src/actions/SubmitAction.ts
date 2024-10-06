@@ -67,6 +67,7 @@ export async function createEventAction(values: any) {
       collectionAddress: values.collectionAddress,
       roomId: values.roomId,
       hostWalletAddress: values.hostWalletAddress,
+      duration: values.duration,
     },
   });
 }

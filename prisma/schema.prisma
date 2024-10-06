@@ -28,18 +28,20 @@ model Creator {
 
 model Events {
   id                String   @id @default(cuid())
+  collectionAddress String   @unique
   roomId            String   @unique
   eventName         String
   eventDesc         String
   eventBanner       String
   eventDate         DateTime
+  duration          Int
   totalTickets      Float
   ticketPrice       Float
   nativeToken       String
   meetLink          String
   blink             String
   hostWalletAddress String
-  collectionAddress String?
+  ticketsSold       Int?
   creatorId         String
   eventCreator      Creator  @relation(fields: [creatorId], references: [id], onDelete: Cascade)
 }

@@ -16,23 +16,7 @@ const Navbar = ({
   requireLogo?: boolean;
 }) => {
   const menuRef = useRef<HTMLDivElement>(null);
-
-  const [open, setOpen] = useState(false);
-
   const scrolled = useScrollTop();
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   return (
     <nav

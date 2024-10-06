@@ -24,6 +24,22 @@ const eventCreationFormSchema = z.object({
   eventDate: z.date({
     required_error: "A date of event is required",
   }),
+  duration: z.string().refine(
+    (val) => {
+      const [hours, minutes] = val.split(":").map(Number);
+      return (
+        !isNaN(hours) &&
+        !isNaN(minutes) &&
+        hours >= 0 &&
+        hours <= 23 &&
+        minutes >= 0 &&
+        minutes <= 59
+      );
+    },
+    {
+      message: "Invalid duration",
+    },
+  ),
   bannerUrl: z
     .any()
     .optional()

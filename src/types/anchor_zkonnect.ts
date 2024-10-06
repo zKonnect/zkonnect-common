@@ -1,5 +1,5 @@
 export type Zkonnect = {
-  address: "D57msu1skRML54zj1pfZ2fzewCx9UPveeT29hys94jrk";
+  address: "9aSnUzUt4b6ZCnyorYD8466AG9QK46Yuuvk1aY3GhzmH";
   metadata: {
     name: "zkonnect";
     version: "0.1.0";
@@ -80,27 +80,11 @@ export type Zkonnect = {
           type: "string";
         },
         {
-          name: "creatorName";
-          type: "string";
-        },
-        {
-          name: "creatorDomain";
-          type: "string";
-        },
-        {
           name: "eventDescription";
           type: "string";
         },
         {
           name: "banner";
-          type: "string";
-        },
-        {
-          name: "dateTime";
-          type: "u64";
-        },
-        {
-          name: "location";
           type: "string";
         },
         {
@@ -409,13 +393,13 @@ export type Zkonnect = {
     },
     {
       code: 6001;
-      name: "ticketSoldOut";
-      msg: "Ticket sold out";
+      name: "payOnlySol";
+      msg: "Only SOL is accepted";
     },
     {
       code: 6002;
-      name: "payOnlySol";
-      msg: "Only SOL is accepted";
+      name: "soldOut";
+      msg: "All Tickets Sold out";
     },
   ];
   types: [
@@ -445,14 +429,6 @@ export type Zkonnect = {
             type: "pubkey";
           },
           {
-            name: "creatorName";
-            type: "string";
-          },
-          {
-            name: "creatorDomain";
-            type: "string";
-          },
-          {
             name: "eventName";
             type: "string";
           },
@@ -465,24 +441,12 @@ export type Zkonnect = {
             type: "string";
           },
           {
-            name: "dateTime";
-            type: "u64";
-          },
-          {
-            name: "location";
-            type: "string";
-          },
-          {
             name: "nfturi";
             type: "string";
           },
           {
             name: "ticketPrice";
             type: "u64";
-          },
-          {
-            name: "ticketsSold";
-            type: "u8";
           },
           {
             name: "totalTickets";

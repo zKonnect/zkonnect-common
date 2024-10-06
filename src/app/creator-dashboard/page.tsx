@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -14,6 +14,7 @@ import { Separator } from "@/components/ui/separator";
 import Events from "./_components/events";
 import EventDetials from "./_components/event-details";
 import { getCreatorData } from "@/actions";
+import { EventData } from "@/types";
 
 type CreatorData = {
   id: string;
@@ -23,23 +24,6 @@ type CreatorData = {
   eventsInaYear: number;
   noOfFollowers: number;
   isVerified: boolean;
-};
-
-type EventData = {
-  id: string;
-  roomId: string;
-  eventName: string;
-  eventDesc: string;
-  eventBanner: string;
-  eventDate: Date;
-  totalTickets: number;
-  ticketPrice: number;
-  nativeToken: string;
-  meetLink: string;
-  blink: string;
-  hostWalletAddress: string;
-  collectionAddress: string | null;
-  creatorId: string;
 };
 
 const CreatorDashboard = () => {
@@ -88,6 +72,15 @@ const CreatorDashboard = () => {
     }
   }, [wallet.connected]);
 
+  const totalEarnings = useMemo(() => {
+    if (!events) return 0;
+    return events.reduce((acc, event) => {
+      return (
+        acc + (event.ticketsSold ? event.ticketsSold : 0) * event.ticketPrice
+      );
+    }, 0);
+  }, [events]);
+
   if (isLoading) {
     return (
       <div className="flex h-full w-full items-center justify-center px-4">
@@ -105,16 +98,13 @@ const CreatorDashboard = () => {
   }
 
   return (
-    <section className="mx-10 flex h-full items-center px-6 py-6 2xl:px-2">
-      <div className="mx-auto flex h-full w-full max-w-[1600px] flex-col items-center">
+    <section className="flex h-full items-center py-6 2xl:px-2">
+      <div className="mx-auto flex h-full w-full max-w-[1600px] flex-col items-center px-6 2xl:px-2">
         <div className="mb-6 flex w-full items-center justify-between pt-18">
-          <div>
-            <h1 className="text-xl font-bold">{creatorData.creatorName}</h1>
-            <p className="text-gray-500">{creatorData.domainOfExpertise}</p>
-          </div>
+          <h1 className="text-xl font-bold">Hey, {creatorData.creatorName}</h1>
 
           <div className="flex flex-row gap-4">
-            <div className="flex items-center rounded border border-gray-200 p-2">
+            <div className="flex items-center rounded-lg border border-gray-200 p-2">
               <Image
                 src="/assets/dashboard/total-event-icon.svg"
                 width={20}
@@ -127,7 +117,7 @@ const CreatorDashboard = () => {
                 {events !== null ? events.length : 0}
               </p>
             </div>
-            <div className="flex items-center rounded border border-gray-200 p-2">
+            <div className="flex items-center rounded-lg border border-gray-200 p-2">
               <Image
                 src="/assets/dashboard/earning-icon.svg"
                 width={20}
@@ -136,17 +126,17 @@ const CreatorDashboard = () => {
                 className="mr-2"
               />
               <p className="mr-3 text-sm text-gray-500">Earning</p>
-              <p className="font-bold">$0.00</p>
+              <p className="font-bold">${totalEarnings.toFixed(2)}</p>
             </div>
           </div>
         </div>
 
         {events !== null && events.length > 0 ? (
-          <div className="w-full rounded-md border py-4">
+          <div className="w-full rounded-xl border py-4">
             <div className="flex items-center justify-between px-4">
               <h2 className="text-xl font-semibold">My Events</h2>
               <Link href="/create-event">
-                <Button className="space-x-6 bg-muted px-5 py-5 text-sm text-black transition-all duration-500 hover:bg-black hover:text-white">
+                <Button className="space-x-2 bg-muted px-5 py-5 text-sm text-black transition-all duration-500 hover:bg-black hover:text-white">
                   <DiamondPlus size={20} />
                   <span>Create event</span>
                 </Button>
@@ -155,12 +145,16 @@ const CreatorDashboard = () => {
 
             <Separator className="my-4 w-full" />
 
-            <div className="flex gap-2 px-4">
-              <div className="w-[25%]">
-                <Events events={events} onSelectEvent={handleSelectEvent} />
+            <div className="flex w-full justify-between gap-2 px-4">
+              <div className="w-[30%]">
+                <Events
+                  events={events}
+                  onSelectEvent={handleSelectEvent}
+                  selectedEvent={selectedEvent}
+                />
               </div>
               <Separator orientation="vertical" className="h-full w-0.5" />
-              <div className="w-[75%]">
+              <div className="w-[70%]">
                 {selectedEvent && (
                   <EventDetials
                     id={selectedEvent.id}
@@ -177,13 +171,15 @@ const CreatorDashboard = () => {
                     roomId={selectedEvent.roomId}
                     ticketPrice={selectedEvent.ticketPrice}
                     totalTickets={selectedEvent.totalTickets}
+                    ticketsSold={selectedEvent.ticketsSold}
+                    duration={selectedEvent.duration}
                   />
                 )}
               </div>
             </div>
           </div>
         ) : (
-          <div className="flex h-[calc(100vh-200px)] w-full flex-col items-center justify-center rounded-md border p-4">
+          <div className="flex h-[calc(100vh-200px)] w-full flex-col items-center justify-center rounded-xl border p-4">
             <p className="mb-4 text-center text-xl font-semibold text-[#808080]">
               Create an Event and Deliver Unforgettable <br />
               Experiences in Real-Time! 😮‍💨

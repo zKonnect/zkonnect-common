@@ -57,12 +57,9 @@ export default function Page() {
 
   const { joinRoom, state, leaveRoom } = useRoom({
     onJoin: (room) => {
-      console.log("onJoin", room);
       updateMetadata({ displayName });
     },
-    onPeerJoin: (peer) => {
-      console.log("onPeerJoin", peer);
-    },
+    onPeerJoin: (peer) => {},
   });
   const { enableVideo, isVideoOn, stream, disableVideo } = useLocalVideo();
   const { enableAudio, disableAudio, isAudioOn } = useLocalAudio();

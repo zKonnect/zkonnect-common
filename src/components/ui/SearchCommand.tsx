@@ -1,6 +1,4 @@
-import { useState, useEffect, useRef } from "react";
-import { File } from "lucide-react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect, useRef } from "react";
 
 import {
   CommandDialog,
@@ -13,9 +11,15 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { useSearch } from "@/hooks/use-search";
+import { EventData } from "@/types";
 
-export const SearchCommand = () => {
-  const router = useRouter();
+export const SearchCommand = ({
+  events,
+  onSelectEvent,
+}: {
+  events: EventData[] | null;
+  onSelectEvent: (event: EventData) => void;
+}) => {
   const [isMounted, setIsMounted] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [isFocused, setIsFocused] = useState(false);
@@ -50,24 +54,34 @@ export const SearchCommand = () => {
         setIsFocused(false);
       }
     };
-
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsFocused(false);
+      }
+    };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    document.addEventListener("keydown", handleKeyDown);
 
-  const onSelect = (id: string) => {
-    router.push(`/documents/${id}`);
-    onClose();
-  };
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
-    // Implement your search logic here
   };
 
   const handleFocus = () => {
     setIsFocused(true);
   };
+
+  const filteredEvents = React.useMemo(() => {
+    if (!events) return [];
+    return events.filter((event) =>
+      event.eventName.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+  }, [events, searchTerm]);
 
   if (!isMounted) return null;
 
@@ -84,16 +98,22 @@ export const SearchCommand = () => {
           <div className="absolute left-0 top-full z-10 mt-1 w-full rounded-lg border bg-white shadow-lg">
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
-              <CommandGroup heading="Suggestions">
-                <CommandItem>
-                  <span>Calendar</span>
-                </CommandItem>
-                <CommandItem>
-                  <span>Search Emoji</span>
-                </CommandItem>
-                <CommandItem disabled>
-                  <span>Calculator</span>
-                </CommandItem>
+              <CommandGroup heading="All Events">
+                {filteredEvents.length > 0 ? (
+                  filteredEvents.map((event) => (
+                    <CommandItem
+                      key={event.id}
+                      onSelect={() => {
+                        onSelectEvent(event);
+                        setIsFocused(false);
+                      }}
+                    >
+                      <span>{event.eventName}</span>
+                    </CommandItem>
+                  ))
+                ) : (
+                  <CommandEmpty>No events found.</CommandEmpty>
+                )}
               </CommandGroup>
               <CommandSeparator />
             </CommandList>
@@ -102,14 +122,26 @@ export const SearchCommand = () => {
       </Command>
 
       <CommandDialog open={isOpen} onOpenChange={onClose}>
-        <CommandInput placeholder="Search Events" />
+        <CommandInput
+          placeholder="Search Events"
+          value={searchTerm}
+          onValueChange={handleSearch}
+        />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup heading="Documents">
-            <CommandItem>
-              <span>Calendar</span>
-            </CommandItem>
-            {/* Add more items based on your search results */}
+          <CommandGroup heading="Events">
+            {filteredEvents.length > 0 ? (
+              filteredEvents.map((event) => (
+                <CommandItem
+                  key={event.id}
+                  onSelect={() => onSelectEvent(event)}
+                >
+                  <span>{event.eventName}</span>
+                </CommandItem>
+              ))
+            ) : (
+              <CommandEmpty>No events found.</CommandEmpty>
+            )}
           </CommandGroup>
         </CommandList>
       </CommandDialog>

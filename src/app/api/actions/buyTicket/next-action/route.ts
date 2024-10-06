@@ -11,6 +11,7 @@ import { Program, web3 } from "@coral-xyz/anchor";
 
 import { Zkonnect } from "@/types/anchor_zkonnect";
 import idl from "@/lib/solana/idl.json";
+import { db } from "@/lib/prisma";
 
 const connection = new web3.Connection(
   process.env.NEXT_PUBLIC_SOLANA_RPC! || clusterApiUrl("devnet"),
@@ -37,6 +38,9 @@ export const POST = async (req: NextRequest) => {
     const url = new URL(req.url);
 
     const profilePda = url.searchParams.get("profilePda") as string;
+    const collectionAddress = url.searchParams.get(
+      "collectionAddress",
+    ) as string;
 
     const body: NextActionPostRequest = await req.json();
 
@@ -93,6 +97,16 @@ export const POST = async (req: NextRequest) => {
               },
             );
           });
+        await db.events.update({
+          where: {
+            collectionAddress: collectionAddress,
+          },
+          data: {
+            ticketsSold: {
+              increment: 1,
+            },
+          },
+        });
       } catch (error) {
         console.error("Error minting nft", error);
         throw "Error minting nft";

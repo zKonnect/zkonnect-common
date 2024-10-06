@@ -1,50 +1,37 @@
 "use client";
 
 import { formatEventTime } from "@/lib/formatEventTime";
+import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SearchCommand } from "@/components/ui/SearchCommand";
 import { Separator } from "@/components/ui/separator";
-
-type EventData = {
-  id: string;
-  roomId: string;
-  eventName: string;
-  eventDesc: string;
-  eventBanner: string;
-  eventDate: Date;
-  totalTickets: number;
-  ticketPrice: number;
-  nativeToken: string;
-  meetLink: string;
-  blink: string;
-  hostWalletAddress: string;
-  collectionAddress: string | null;
-  creatorId: string;
-};
+import { EventData } from "@/types";
 
 const EventItem = ({
   title,
-  desc,
   startTime,
   id,
   onClick,
+  isSelected,
 }: {
   title: string;
-  desc: string;
   startTime: string;
   id: string;
   onClick: () => void;
+  isSelected: boolean;
 }) => {
   return (
     <div
-      className="mb-3 block rounded-md p-4 hover:bg-gray-100"
+      className={cn(
+        "block cursor-pointer rounded-lg p-4 transition-all duration-500 hover:bg-muted",
+        isSelected && "bg-muted",
+      )}
       onClick={onClick}
       key={id}
     >
       <h4 className="mb-1 text-lg font-semibold">{title}</h4>
-      <p className="text-gray-500">{desc}</p>
-      <p className="text-sm text-gray-400">{startTime}</p>
+      <p className="text-sm text-muted-foreground">{startTime}</p>
     </div>
   );
 };
@@ -52,9 +39,11 @@ const EventItem = ({
 const Events = ({
   events,
   onSelectEvent,
+  selectedEvent,
 }: {
   events: EventData[] | null;
   onSelectEvent: (event: EventData) => void;
+  selectedEvent: EventData | null;
 }) => {
   if (!events) return null;
 
@@ -70,7 +59,7 @@ const Events = ({
   return (
     <Card className="h-full w-full border-none shadow-none outline-none">
       <CardHeader>
-        <SearchCommand />
+        <SearchCommand events={events} onSelectEvent={onSelectEvent} />
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="upcoming" className="w-full">
@@ -90,32 +79,45 @@ const Events = ({
           </TabsList>
           <TabsContent value="upcoming">
             {upcomingEvents.length > 0 ? (
-              upcomingEvents.map((event) => (
-                <EventItem
-                  key={event.id}
-                  id={event.id}
-                  title={event.eventName}
-                  desc={event.eventDesc}
-                  startTime={formatEventTime(event.eventDate)}
-                  onClick={() => onSelectEvent(event)}
-                />
+              upcomingEvents.map((event, index) => (
+                <div key={event.id}>
+                  <EventItem
+                    id={event.id}
+                    title={event.eventName}
+                    startTime={formatEventTime(event.eventDate)}
+                    onClick={() => onSelectEvent(event)}
+                    isSelected={selectedEvent?.id === event.id}
+                  />
+                  <Separator
+                    className={cn(
+                      "my-2 w-full",
+                      upcomingEvents.length === index + 1 && "hidden",
+                    )}
+                  />
+                </div>
               ))
             ) : (
               <p className="text-gray-500">No upcoming events.</p>
             )}
           </TabsContent>
-          <Separator className="w-full" />
           <TabsContent value="past">
             {pastEvents.length > 0 ? (
-              pastEvents.map((event) => (
-                <EventItem
-                  key={event.id}
-                  id={event.id}
-                  title={event.eventName}
-                  desc={event.eventDesc}
-                  startTime={formatEventTime(event.eventDate)}
-                  onClick={() => onSelectEvent(event)}
-                />
+              pastEvents.map((event, index) => (
+                <div key={event.id}>
+                  <EventItem
+                    id={event.id}
+                    title={event.eventName}
+                    startTime={formatEventTime(event.eventDate)}
+                    onClick={() => onSelectEvent(event)}
+                    isSelected={selectedEvent?.id === event.id}
+                  />
+                  <Separator
+                    className={cn(
+                      "my-2 w-full",
+                      pastEvents.length === index + 1 && "hidden",
+                    )}
+                  />
+                </div>
               ))
             ) : (
               <p className="text-gray-500">No past events.</p>

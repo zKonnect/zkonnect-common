@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { z } from "zod";
-import { useForm, useFormState } from "react-hook-form";
+import { Controller, useForm, useFormState } from "react-hook-form";
 import { toast } from "sonner";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
@@ -75,6 +75,7 @@ const EventCreation = () => {
       eventDate: new Date(),
       bannerUrl: undefined,
       nativePaymentToken: "USDC",
+      duration: "00:00",
     },
   });
 
@@ -167,11 +168,7 @@ const EventCreation = () => {
               await createTheEvent({
                 eventName: values.eventName,
                 eventDescription: values.eventDescription,
-                creatorName: creatorName!,
-                creatorDomain: creatorDomain!,
                 bannerUrl: bannerUrl,
-                dateTime: values.eventDate.getTime(),
-                location: `https://zkonnect.social/meet/${roomId}`,
                 nftUri: nftUri,
                 ticketPrice: values.ticketPrice,
                 totalTickets: values.totalTickets,
@@ -181,6 +178,9 @@ const EventCreation = () => {
               });
 
               const blinkUrl = `https://zkonnect.social/api/actions/buyTicket?eventName=${values.eventName}&address=${wallet.publicKey!.toString()}`;
+
+              const [hours, minutes] = values.duration.split(":").map(Number);
+              const totalMinutes = hours * 60 + minutes;
 
               await createEventAction({
                 eventName: values.eventName,
@@ -196,6 +196,7 @@ const EventCreation = () => {
                 collectionAddress: collectionNftAddr.mint,
                 roomId: roomId,
                 hostWalletAddress: wallet.publicKey!.toString(),
+                duration: totalMinutes,
               });
             });
           })
@@ -288,11 +289,12 @@ const EventCreation = () => {
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="eventDate"
           render={({ field }) => (
-            <FormItem className="flex flex-col">
+            <FormItem className="flex w-full flex-col">
               <FormLabel>Date & Time of Event</FormLabel>
               <Popover>
                 <PopoverTrigger asChild className="h-[50px]">
@@ -330,6 +332,75 @@ const EventCreation = () => {
               </Popover>
               <FormDescription>
                 The Date on which you want to host the event.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="duration"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>Duration</FormLabel>
+              <FormControl>
+                <div className="flex space-x-2">
+                  <Controller
+                    name="duration"
+                    control={form.control}
+                    render={({ field }) => {
+                      const [hours, minutes] = field.value.split(":");
+                      return (
+                        <>
+                          <Select
+                            onValueChange={(value) =>
+                              field.onChange(`${value}:${minutes}`)
+                            }
+                            value={hours}
+                          >
+                            <SelectTrigger className="h-[50px] w-full">
+                              <SelectValue placeholder="Hours" />
+                            </SelectTrigger>
+                            <SelectContent className="z-[99999] max-h-[250px]">
+                              {[...Array(24)].map((_, i) => (
+                                <SelectItem
+                                  key={i}
+                                  value={i.toString().padStart(2, "0")}
+                                >
+                                  {i} {i === 1 ? "hour" : "hours"}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <Select
+                            onValueChange={(value) =>
+                              field.onChange(`${hours}:${value}`)
+                            }
+                            value={minutes}
+                          >
+                            <SelectTrigger className="h-[50px] w-full">
+                              <SelectValue placeholder="Minutes" />
+                            </SelectTrigger>
+                            <SelectContent className="z-[99999] max-h-[300px]">
+                              {[...Array(60)].map((_, i) => (
+                                <SelectItem
+                                  key={i}
+                                  value={i.toString().padStart(2, "0")}
+                                >
+                                  {i} {i === 1 ? "minute" : "minutes"}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </>
+                      );
+                    }}
+                  />
+                </div>
+              </FormControl>
+              <FormDescription>
+                The Duration of the event in hours and minutes.
               </FormDescription>
               <FormMessage />
             </FormItem>

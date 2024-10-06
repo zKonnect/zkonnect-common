@@ -1,5 +1,5 @@
 {
-  "address": "D57msu1skRML54zj1pfZ2fzewCx9UPveeT29hys94jrk",
+  "address": "9aSnUzUt4b6ZCnyorYD8466AG9QK46Yuuvk1aY3GhzmH",
   "metadata": {
     "name": "zkonnect",
     "version": "0.1.0",
@@ -80,27 +80,11 @@
           "type": "string"
         },
         {
-          "name": "creator_name",
-          "type": "string"
-        },
-        {
-          "name": "creator_domain",
-          "type": "string"
-        },
-        {
           "name": "event_description",
           "type": "string"
         },
         {
           "name": "banner",
-          "type": "string"
-        },
-        {
-          "name": "date_time",
-          "type": "u64"
-        },
-        {
-          "name": "location",
           "type": "string"
         },
         {
@@ -293,13 +277,13 @@
     },
     {
       "code": 6001,
-      "name": "TicketSoldOut",
-      "msg": "Ticket sold out"
+      "name": "PayOnlySol",
+      "msg": "Only SOL is accepted"
     },
     {
       "code": 6002,
-      "name": "PayOnlySol",
-      "msg": "Only SOL is accepted"
+      "name": "SoldOut",
+      "msg": "All Tickets Sold out"
     }
   ],
   "types": [
@@ -329,14 +313,6 @@
             "type": "pubkey"
           },
           {
-            "name": "creator_name",
-            "type": "string"
-          },
-          {
-            "name": "creator_domain",
-            "type": "string"
-          },
-          {
             "name": "event_name",
             "type": "string"
           },
@@ -349,24 +325,12 @@
             "type": "string"
           },
           {
-            "name": "date_time",
-            "type": "u64"
-          },
-          {
-            "name": "location",
-            "type": "string"
-          },
-          {
             "name": "nfturi",
             "type": "string"
           },
           {
             "name": "ticket_price",
             "type": "u64"
-          },
-          {
-            "name": "tickets_sold",
-            "type": "u8"
           },
           {
             "name": "total_tickets",

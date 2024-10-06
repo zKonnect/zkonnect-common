@@ -201,7 +201,7 @@ export const POST = async (req: Request) => {
           links: {
             next: {
               type: "post",
-              href: `/api/actions/buyTicket/next-action?profilePda=${profilePda.toString()}`,
+              href: `/api/actions/buyTicket/next-action?profilePda=${profilePda.toString()}&collectionAddress=${eventAccount.collectionNft.toString()}`,
             },
           },
         },

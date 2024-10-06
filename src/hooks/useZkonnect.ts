@@ -55,11 +55,7 @@ export const useZkonnect = () => {
   const createTheEvent = async ({
     eventName,
     eventDescription,
-    creatorName,
-    creatorDomain,
     bannerUrl,
-    dateTime,
-    location,
     nftUri,
     ticketPrice,
     totalTickets,
@@ -69,11 +65,7 @@ export const useZkonnect = () => {
   }: {
     eventName: string;
     eventDescription: string;
-    creatorName: string;
-    creatorDomain: string;
     bannerUrl: string;
-    dateTime: number;
-    location: string;
     nftUri: string;
     ticketPrice: number;
     totalTickets: number;
@@ -105,12 +97,8 @@ export const useZkonnect = () => {
       return program.methods
         .createEvent(
           eventName,
-          creatorName,
-          creatorDomain,
           eventDescription,
           bannerUrl,
-          new BN(dateTime),
-          location,
           nftUri,
           mintAmount,
           new BN(totalTickets),

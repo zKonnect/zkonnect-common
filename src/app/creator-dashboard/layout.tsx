@@ -6,7 +6,11 @@ export const metadata = constructMetaData({
   description: "Creator Dashboard of zKonnect",
 });
 
-const CreatorSignupLayout = ({ children }: { children: React.ReactNode }) => {
+const CreatorDashboardLayout = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   return (
     <div className="h-full">
       <Navbar requireLogo />
@@ -15,4 +19,4 @@ const CreatorSignupLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default CreatorSignupLayout;
+export default CreatorDashboardLayout;

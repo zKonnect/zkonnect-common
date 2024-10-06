@@ -6,7 +6,7 @@ import {
   transactionBuilder,
 } from "@metaplex-foundation/umi";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
-import { clusterApiUrl, Connection } from "@solana/web3.js";
+import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
 import {
   mintToCollectionV1,
   MPL_BUBBLEGUM_PROGRAM_ID,
@@ -40,7 +40,7 @@ function mintToCollection(
   const mintTx = mintToCollectionV1(umi, {
     leafOwner: userAddr,
     merkleTree: merkleTree,
-    leafDelegate: umi.payer.publicKey,
+    leafDelegate: publicKey(PublicKey.default),
     collectionAuthority: umi.payer,
     collectionAuthorityRecordPda: MPL_BUBBLEGUM_PROGRAM_ID,
     collectionMint: collectionMint,
