@@ -4,7 +4,7 @@ const CreatorSignupLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="h-full">
       <Navbar requireLogo />
-      <main className="h-screen bg-zkonnect-white-origin">{children}</main>
+      <main className="bg-zkonnect-white-origin">{children}</main>
     </div>
   );
 };

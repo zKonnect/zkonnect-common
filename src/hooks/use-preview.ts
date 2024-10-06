@@ -2,7 +2,6 @@ import { create } from "zustand";
 
 type PreviewStore = {
   isPreviewOpen: boolean;
-
   toggle: () => void;
 };
 

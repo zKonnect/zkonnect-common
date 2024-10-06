@@ -4,6 +4,8 @@ import Link from "next/link";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SearchCommand } from "@/components/ui/SearchCommand";
+import { Separator } from "@/components/ui/separator";
 
 const EventItem = ({
   title,
@@ -19,7 +21,7 @@ const EventItem = ({
   return (
     <Link
       href={`/creator-dashboard/event/${id}`}
-      className="mb-3 block rounded-md border p-4 hover:bg-gray-100"
+      className="mb-3 block rounded-md p-4 hover:bg-gray-100"
     >
       <h4 className="mb-1 text-lg font-semibold">{title}</h4>
       <p className="text-gray-500">{desc}</p>
@@ -30,9 +32,9 @@ const EventItem = ({
 
 const Events = () => {
   return (
-    <Card className="h-full w-full">
+    <Card className="h-full w-full border-none shadow-none outline-none">
       <CardHeader>
-        <CardTitle>My Events</CardTitle>
+        <SearchCommand />
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="upcoming" className="w-full">
@@ -64,6 +66,7 @@ const Events = () => {
               startTime="Starts in 16h 32min"
             />
           </TabsContent>
+          <Separator className="w-full" />
           <TabsContent value="past">
             <EventItem
               id="2"
@@ -71,9 +74,11 @@ const Events = () => {
               desc="Desc"
               startTime="Ended 2 days ago"
             />
+            <Separator className="w-full" />
           </TabsContent>
           <TabsContent value="drafts">
             <EventItem id="3" title="Event3" desc="Desc" startTime="Draft" />
+            <Separator className="w-full" />
           </TabsContent>
         </Tabs>
       </CardContent>

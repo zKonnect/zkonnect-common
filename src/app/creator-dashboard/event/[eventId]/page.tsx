@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 
 interface EventPageProps {
-  params: {
+  params?: {
     eventId: string;
     title: string;
     desc: string;
@@ -46,14 +46,14 @@ export default function EventPage({ params }: EventPageProps) {
     }, 1000);
   };
   return (
-    <div className="container mx-auto mt-8 p-4">
-      <Card className="w-full">
-        <CardHeader className="bg-[#FF6D4D] text-white">
-          <CardTitle className="text-md">Event Details</CardTitle>
+    <div className="mx-auto px-4">
+      <Card className="w-full rounded-3xl">
+        <CardHeader className="space-y-6 rounded-t-3xl bg-[#FF6D4D] px-0 text-white">
+          <CardTitle className="px-6 font-normal">Event Details</CardTitle>
           <Separator />
-          <h2 className="mt-4 text-4xl font-bold">Event title</h2>
+          <h2 className="mt-4 px-6 text-3xl font-bold">Event title</h2>
           {/* <h2 className="mt-4 text-4xl font-bold">{params.title}</h2> */}
-          <div className="mt-2 flex items-center">
+          <div className="mt-2 flex items-center px-6">
             <CalendarIcon className="mr-2" />
             <span>Starts on 12:00 a.m.</span>
             {/* <span>Starts on {params.startTime}</span> */}
@@ -66,7 +66,7 @@ export default function EventPage({ params }: EventPageProps) {
               <p className="mb-8">Event description.</p>
               {/* <p className="mb-8">{params.desc}</p> */}
 
-              <div className="mb-4 border p-4">
+              <div className="mb-4 rounded-lg border p-4">
                 <div className="mb-4 flex items-center">
                   <Image
                     src="/assets/dashboard/ticket-icon.svg"
@@ -78,7 +78,7 @@ export default function EventPage({ params }: EventPageProps) {
                   <h5 className="font-bold">Ticket Details</h5>
                 </div>
                 <p className="mb-4 text-gray-600">
-                  Here's the detailed listing:
+                  Here&apos;s the detailed listing:
                 </p>
                 <div className="grid grid-cols-3 gap-4">
                   <div className="rounded-lg bg-[#F8F8F8] p-3">
@@ -110,7 +110,7 @@ export default function EventPage({ params }: EventPageProps) {
                 </div>
               </div>
 
-              <div className="w-1/2 gap-2 border p-2">
+              <div className="w-full gap-2 rounded-lg border p-2">
                 <div className="mb-2 flex items-center space-x-2">
                   <div className="grid flex-1 gap-2">
                     <Label
@@ -184,9 +184,11 @@ export default function EventPage({ params }: EventPageProps) {
               </div>
             </div>
 
-            <div className="mx-auto w-1/4 border p-3">
-              <h3 className="mb-4 text-2xl font-bold">Event Banner</h3>
-              <div className="w-54 h-64 rounded-lg bg-[#FF6D4D]"></div>
+            <div className="w-fit p-3 pr-0">
+              <div className="size-[300px] rounded-lg bg-[#FF6D4D]"></div>
+              <h3 className="mt-2 text-center text-muted-foreground">
+                Event Banner
+              </h3>
             </div>
           </div>
           <div className="mt-4 flex justify-end">
