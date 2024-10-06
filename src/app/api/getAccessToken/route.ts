@@ -66,26 +66,28 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid Signature" }, { status: 400 });
   }
 
-  const umi = createUmi(
-    process.env.NEXT_PUBLIC_SOLANA_RPC! || clusterApiUrl("devnet"),
-  ).use(mplBubblegum());
-  umi.use(dasApi());
-  const rpcAssetList = await umi.rpc.getAssetsByOwner({
-    // @ts-expect-error: owner is not defined in the type
-    owner: new PublicKey(address),
-  });
+  if (roomDetails.hostWalletAddress !== address) {
+    const umi = createUmi(
+      process.env.NEXT_PUBLIC_SOLANA_RPC! || clusterApiUrl("devnet"),
+    ).use(mplBubblegum());
+    umi.use(dasApi());
+    const rpcAssetList = await umi.rpc.getAssetsByOwner({
+      // @ts-expect-error: owner is not defined in the type
+      owner: new PublicKey(address),
+    });
 
-  const exists = rpcAssetList.items.some((nft) =>
-    nft.grouping.some((group) => {
-      return group.group_value === collectionAddress.collectionAddress;
-    }),
-  );
-
-  if (!exists) {
-    return NextResponse.json(
-      { error: "You don't own the required NFT." },
-      { status: 400 },
+    const exists = rpcAssetList.items.some((nft) =>
+      nft.grouping.some((group) => {
+        return group.group_value === collectionAddress.collectionAddress;
+      }),
     );
+
+    if (!exists) {
+      return NextResponse.json(
+        { error: "You don't own the required NFT." },
+        { status: 400 },
+      );
+    }
   }
 
   const isHost = address === roomDetails.hostWalletAddress;
