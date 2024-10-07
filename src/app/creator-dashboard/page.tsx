@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 import { DiamondPlus } from "lucide-react";
 import { toast } from "sonner";
@@ -29,6 +30,7 @@ type CreatorData = {
 const CreatorDashboard = () => {
   const wallet = useWallet();
   const session = useSession();
+  const router = useRouter();
 
   const [creatorData, setCreatorData] = useState<CreatorData | null>(null);
   const [events, setEvents] = useState<EventData[] | null>(null);
@@ -42,6 +44,7 @@ const CreatorDashboard = () => {
   const fetchCreatorData = async () => {
     if (!wallet.publicKey) {
       toast.error("Please connect your wallet");
+      router.push("/");
       return;
     }
     try {
@@ -49,6 +52,11 @@ const CreatorDashboard = () => {
       if (response) {
         const { Events, ...creatorDetails } = response;
         setCreatorData(creatorDetails);
+        if (response.isVerified === false) {
+          toast.error("Please verify your account");
+          router.push("/creator-signup/verification");
+          return;
+        }
         if (response?.Events) {
           setEvents(Events);
           setSelectedEvent(Events[0]);
@@ -63,6 +71,11 @@ const CreatorDashboard = () => {
   };
 
   useEffect(() => {
+    if (!wallet.publicKey) {
+      toast.error("Please connect your wallet");
+      router.push("/");
+      return;
+    }
     if (
       wallet.connected &&
       session.status === "authenticated" &&

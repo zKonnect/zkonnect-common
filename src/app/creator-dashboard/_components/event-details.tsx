@@ -7,9 +7,10 @@ import {
   Copy,
   Check,
   CircleCheck,
-  CalendarIcon,
   Ticket,
   HandCoins,
+  CalendarDays,
+  Hourglass,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -20,7 +21,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { EventData } from "@/types";
-import { formatDate } from "@/lib/formatEventTime";
+import { formatDate, formatDuration } from "@/lib/formatEventTime";
 
 export default function EventDetials({
   id,
@@ -64,9 +65,15 @@ export default function EventDetials({
             {eventName}
           </h2>
 
-          <div className="mt-2 flex items-center px-6">
-            <CalendarIcon className="mr-2" />
-            <span>{formatDate(eventDate)}</span>
+          <div className="mt-2 flex">
+            <div className="flex items-center px-6">
+              <CalendarDays className="mr-2" size={16} />
+              <span>{formatDate(eventDate)}</span>
+            </div>
+            <div className="flex items-center">
+              <Hourglass className="mr-2" size={16} />
+              <span>{formatDuration(duration)}</span>
+            </div>
           </div>
         </CardHeader>
         <CardContent className="p-6">
