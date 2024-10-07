@@ -13,9 +13,10 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Events from "./_components/events";
+import DashboardSkeleton from "./_components/dashboard-skeleton";
 import EventDetials from "./_components/event-details";
-import { getCreatorData } from "@/actions";
 import { EventData } from "@/types";
+import { getCreatorData } from "@/actions";
 
 type CreatorData = {
   id: string;
@@ -34,7 +35,7 @@ const CreatorDashboard = () => {
 
   const [creatorData, setCreatorData] = useState<CreatorData | null>(null);
   const [events, setEvents] = useState<EventData[] | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
 
   const handleSelectEvent = (event: EventData) => {
@@ -48,6 +49,7 @@ const CreatorDashboard = () => {
       return;
     }
     try {
+      setIsLoading(true);
       const response = await getCreatorData(wallet.publicKey.toString());
       if (response) {
         const { Events, ...creatorDetails } = response;
@@ -66,15 +68,13 @@ const CreatorDashboard = () => {
       }
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   useEffect(() => {
-    if (!wallet.publicKey) {
-      toast.error("Please connect your wallet");
+    if (session.status === "unauthenticated") {
       router.push("/");
-      return;
     }
     if (
       wallet.connected &&
@@ -83,7 +83,7 @@ const CreatorDashboard = () => {
     ) {
       fetchCreatorData();
     }
-  }, [wallet.connected]);
+  }, [wallet.connected, session.status]);
 
   const totalEarnings = useMemo(() => {
     if (!events) return 0;
@@ -96,17 +96,36 @@ const CreatorDashboard = () => {
 
   if (isLoading) {
     return (
-      <div className="flex h-full w-full items-center justify-center px-4">
-        Loading
-      </div>
+      <section className="flex h-full items-center py-6 2xl:px-2">
+        <div className="mx-auto flex h-full w-full max-w-[1600px] flex-col items-center px-6 2xl:px-2">
+          <DashboardSkeleton />
+        </div>
+      </section>
     );
   }
 
   if (!creatorData) {
     return (
-      <div className="flex h-full w-full items-center justify-center px-4">
-        No data available
-      </div>
+      <section className="flex h-full items-center py-6 2xl:px-2">
+        <div className="mx-auto flex h-full w-full max-w-[1600px] flex-col items-center px-6 pt-18 2xl:px-2">
+          <div className="flex h-[calc(100vh-200px)] w-full flex-col items-center justify-center rounded-xl border p-4">
+            <p className="mb-4 text-center text-xl font-semibold text-[#808080]">
+              Create an Event and Deliver Unforgettable <br />
+              Experiences in Real-Time! 😮‍💨
+            </p>
+            <p className="mb-4 text-center text-sm font-normal text-[#808080]">
+              Looks like you haven&apos;t created one yet—start now to <br />
+              deliver unforgettable real-time experiences!
+            </p>
+            <Link href="/create-event">
+              <Button className="space-x-2 bg-black px-5 py-5 text-sm text-white transition-all duration-500 hover:bg-primary/80">
+                <DiamondPlus size={20} />
+                <span>Create event</span>
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
     );
   }
 
