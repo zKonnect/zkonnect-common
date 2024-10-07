@@ -124,7 +124,7 @@ export const POST = async (req: NextRequest) => {
     const payload: CompletedAction = {
       type: "completed",
       title: "Ticket Successfully Minted!",
-      icon: imageUrl,
+      icon: "https://res.cloudinary.com/dftafieg2/image/upload/v1728289422/vkhn9zva5wdxgcsv5jfj.png",
       label: "Ticket Minted!",
       description: `Your ticket has been successfully minted and is now available in your wallet.`,
     };
