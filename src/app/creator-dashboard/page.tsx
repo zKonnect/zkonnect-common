@@ -56,11 +56,11 @@ const CreatorDashboard = () => {
       if (response) {
         const { Events, ...creatorDetails } = response;
         setCreatorData(creatorDetails);
-        // if (response.isVerified === false) {
-        //   toast.error("Please verify your account");
-        //   router.push("/creator-signup/verification");
-        //   return;
-        // }
+        if (response.isVerified === false) {
+          toast.error("Please verify your account");
+          router.push("/creator-signup/verification");
+          return;
+        }
         if (response?.Events) {
           setEvents(Events);
           setSelectedEvent(Events[0]);
@@ -226,75 +226,22 @@ const CreatorDashboard = () => {
             </div>
           </div>
         ) : (
-          <div className="w-full rounded-xl border py-4">
-            <div className="flex items-center justify-between px-4">
-              <h2 className="text-xl font-semibold">
-                {showAnalytics ? "Analytics" : "My Events"}
-              </h2>
-              <div className="space-x-2">
-                <Button
-                  onClick={toggleView}
-                  className="space-x-2 bg-muted px-5 py-5 text-sm text-black transition-all duration-500 hover:bg-black hover:text-white"
-                >
-                  {showAnalytics ? (
-                    <>
-                      <Ticket size={20} />
-                      <span>My Events</span>
-                    </>
-                  ) : (
-                    <>
-                      <LineChart size={20} />
-                      <span>View Analytics</span>
-                    </>
-                  )}
-                </Button>
-                <Link href="/create-event">
-                  <Button className="space-x-2 bg-muted px-5 py-5 text-sm text-black transition-all duration-500 hover:bg-black hover:text-white">
-                    <DiamondPlus size={20} />
-                    <span>Create event</span>
-                  </Button>
-                </Link>
-              </div>
-            </div>
-
-            <Separator className="my-4 w-full" />
-
-            <div className="flex w-full justify-between gap-2 px-4">
-              {showAnalytics ? (
-                <Analytics />
-              ) : (
-                <>
-                  <div className="w-[30%]">
-                    <Events
-                      events={events}
-                      onSelectEvent={handleSelectEvent}
-                      selectedEvent={selectedEvent}
-                    />
-                  </div>
-                  <Separator orientation="vertical" className="h-full w-0.5" />
-                  <div className="w-[70%]">
-                    {selectedEvent && <EventDetials {...selectedEvent} />}
-                  </div>
-                </>
-              )}
-            </div>
+          <div className="flex h-[calc(100vh-200px)] w-full flex-col items-center justify-center rounded-xl border p-4">
+            <p className="mb-4 text-center text-xl font-semibold text-[#808080]">
+              Create an Event and Deliver Unforgettable <br />
+              Experiences in Real-Time! 😮‍💨
+            </p>
+            <p className="mb-4 text-center text-sm font-normal text-[#808080]">
+              Looks like you haven&apos;t created one yet—start now to <br />
+              deliver unforgettable real-time experiences!
+            </p>
+            <Link href="/create-event">
+              <Button className="space-x-2 bg-black px-5 py-5 text-sm text-white transition-all duration-500 hover:bg-primary/80">
+                <DiamondPlus size={20} />
+                <span>Create event</span>
+              </Button>
+            </Link>
           </div>
-          // <div className="flex h-[calc(100vh-200px)] w-full flex-col items-center justify-center rounded-xl border p-4">
-          //   <p className="mb-4 text-center text-xl font-semibold text-[#808080]">
-          //     Create an Event and Deliver Unforgettable <br />
-          //     Experiences in Real-Time! 😮‍💨
-          //   </p>
-          //   <p className="mb-4 text-center text-sm font-normal text-[#808080]">
-          //     Looks like you haven&apos;t created one yet—start now to <br />
-          //     deliver unforgettable real-time experiences!
-          //   </p>
-          //   <Link href="/create-event">
-          //     <Button className="space-x-2 bg-black px-5 py-5 text-sm text-white transition-all duration-500 hover:bg-primary/80">
-          //       <DiamondPlus size={20} />
-          //       <span>Create event</span>
-          //     </Button>
-          //   </Link>
-          // </div>
         )}
       </div>
     </section>
