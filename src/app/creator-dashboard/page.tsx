@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import { DiamondPlus } from "lucide-react";
+import { DiamondPlus, LineChart } from "lucide-react";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { useWallet } from "@solana/wallet-adapter-react";
@@ -136,7 +136,7 @@ const CreatorDashboard = () => {
           <h1 className="text-xl font-bold">Hey, {creatorData.creatorName}</h1>
 
           <div className="flex flex-row gap-4">
-            <div className="flex items-center rounded-lg border border-gray-200 p-2">
+            <div className="flex items-center rounded-lg p-2">
               <Image
                 src="/assets/dashboard/total-event-icon.svg"
                 width={20}
@@ -145,11 +145,12 @@ const CreatorDashboard = () => {
                 className="mr-2"
               />
               <p className="mr-3 text-sm text-gray-500">Total Events</p>
-              <p className="mr-2 font-bold">
+              <p className="mr-2 font-bold text-gray-500">
                 {events !== null ? events.length : 0}
               </p>
             </div>
-            <div className="flex items-center rounded-lg border border-gray-200 p-2">
+            <span className="p-2 text-gray-500">|</span>
+            <div className="flex items-center rounded-lg p-2">
               <Image
                 src="/assets/dashboard/earning-icon.svg"
                 width={20}
@@ -158,7 +159,9 @@ const CreatorDashboard = () => {
                 className="mr-2"
               />
               <p className="mr-3 text-sm text-gray-500">Earning</p>
-              <p className="font-bold">${totalEarnings.toFixed(2)}</p>
+              <p className="font-bold text-gray-500">
+                ${totalEarnings.toFixed(2)}
+              </p>
             </div>
           </div>
         </div>
@@ -167,12 +170,20 @@ const CreatorDashboard = () => {
           <div className="w-full rounded-xl border py-4">
             <div className="flex items-center justify-between px-4">
               <h2 className="text-xl font-semibold">My Events</h2>
-              <Link href="/create-event">
-                <Button className="space-x-2 bg-muted px-5 py-5 text-sm text-black transition-all duration-500 hover:bg-black hover:text-white">
-                  <DiamondPlus size={20} />
-                  <span>Create event</span>
-                </Button>
-              </Link>
+              <div className="space-x-2">
+                <Link href="">
+                  <Button className="space-x-2 bg-muted px-5 py-5 text-sm text-black transition-all duration-500 hover:bg-black hover:text-white">
+                    <LineChart size={20} />
+                    <span>View Analytics</span>
+                  </Button>
+                </Link>
+                <Link href="/create-event">
+                  <Button className="space-x-2 bg-muted px-5 py-5 text-sm text-black transition-all duration-500 hover:bg-black hover:text-white">
+                    <DiamondPlus size={20} />
+                    <span>Create event</span>
+                  </Button>
+                </Link>
+              </div>
             </div>
 
             <Separator className="my-4 w-full" />
