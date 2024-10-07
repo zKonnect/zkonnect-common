@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 import { Copy, Check, CircleCheck } from "lucide-react";
 
@@ -8,6 +9,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -27,6 +29,8 @@ export function ConfirmPreview({
   blinkUrl: string | undefined;
   newMeetUrl: string | undefined;
 }) {
+  const router = useRouter();
+
   const toggle = usePreview((store) => store.toggle);
   const isOpen = usePreview((store) => store.isPreviewOpen);
   const [copiedBlink, setCopiedBlink] = useState<boolean>(false);
@@ -157,6 +161,17 @@ export function ConfirmPreview({
             </div>
           </div>
         </div>
+        <DialogFooter>
+          <Button
+            onClick={() => {
+              router.push("/creator-dashboard");
+            }}
+            size="default"
+            className="text-xs"
+          >
+            Go to Dashboard
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

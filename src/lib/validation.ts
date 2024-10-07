@@ -19,7 +19,7 @@ const ACCEPTED_IMAGE_MIME_TYPES = [
 ];
 
 const eventCreationFormSchema = z.object({
-  eventName: z.string().trim().min(1, "Cannot be empty"),
+  eventName: z.string().trim().min(1, "Cannot be empty").max(32),
   eventDescription: z.string().trim().min(1, "Cannot be empty"),
   eventDate: z.date({
     required_error: "A date of event is required",
