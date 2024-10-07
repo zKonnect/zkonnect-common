@@ -68,6 +68,7 @@ export async function createEventAction(values: any) {
       roomId: values.roomId,
       hostWalletAddress: values.hostWalletAddress,
       duration: values.duration,
+      ticketsSold: 0,
     },
   });
 }

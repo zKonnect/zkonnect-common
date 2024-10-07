@@ -97,7 +97,7 @@ export const POST = async (req: NextRequest) => {
               },
             );
           });
-        await db.events.update({
+        const x = await db.events.update({
           where: {
             collectionAddress: collectionAddress,
           },
