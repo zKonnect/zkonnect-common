@@ -48,6 +48,10 @@ Here's a Link to test it out: [Blink](https://x.com/itami_69/status/184328808769
 ## Figma
 [Figma Link](https://www.figma.com/design/pPGLD4TiGBRdhMnILmF93e/zKonnect?node-id=0-1&t=CQLEuhct2tgLXtlh-1)
 
+## Pitch Deck & Twitter
+[YouTube](https://www.youtube.com/watch?v=Ci5KtnAmR2k) </br>
+[Twitter](https://x.com/zkonnect_social)
+
 ## Installation
 
 1. Clone the repository
