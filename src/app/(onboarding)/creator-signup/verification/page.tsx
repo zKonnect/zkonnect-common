@@ -17,7 +17,7 @@ const VerificationPage = () => {
           </h1>
           <p className="w-full text-start text-sm text-muted-foreground lg:text-center">
             Note: Your account will be verified only if your social <br />{" "}
-            follower count is 10K+
+            follower count is 250+ (this threshold will increase later)
           </p>
           <ProvidersComponent />
         </div>

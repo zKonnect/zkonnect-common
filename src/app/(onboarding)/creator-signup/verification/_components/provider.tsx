@@ -66,7 +66,7 @@ const ProvidersComponent = () => {
           verifiedData.verified && setIsOpen(false);
           toast.success("Verification successful");
           const followers = data as ResponseData;
-          if (parseInt(followers.followers.replace(/,/g, ""), 10) > 1000) {
+          if (parseInt(followers.followers.replace(/,/g, ""), 10) > 250) {
             setVerified({ states: "verified" });
             try {
               let promise: any;
@@ -96,7 +96,7 @@ const ProvidersComponent = () => {
           } else {
             setVerified({ states: "ineligible" });
             toast.error(
-              "You are not eligible as you do not have 10K+ followers.",
+              "You are not eligible as you do not have 250+ followers.",
             );
           }
         })
@@ -162,7 +162,7 @@ const ProvidersComponent = () => {
       {verfied.states === "ineligible" && (
         <p className="my-6 flex items-center justify-center space-x-2 text-xs text-destructive lg:my-8 lg:text-sm">
           <BadgeInfo size={18} />{" "}
-          <span>You are not eligible as you do not have 10K+ followers.</span>
+          <span>You are not eligible as you do not have 250+ followers.</span>
         </p>
       )}
       {verfied.states === "verified" && (
