@@ -14,10 +14,13 @@ export default function Home() {
 
   useEffect(() => {
     const isCreatorVerified = async (pubKey: string) => {
-      const { isVerified } = await getCreatorDataAction(pubKey);
+      const { isVerified, creatorName } = await getCreatorDataAction(pubKey);
 
       if (isVerified === true) {
         return router.push("/creator-dashboard");
+      }
+      if (isVerified === false && creatorName) {
+        return router.push("/creator-signup/verification");
       }
       return router.push("/creator-signup");
     };

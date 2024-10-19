@@ -1,5 +1,7 @@
 "use client";
 
+import React from "react";
+
 import { formatEventTime } from "@/lib/formatEventTime";
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -49,12 +51,31 @@ const Events = ({
 
   const currentTime = new Date();
 
-  const upcomingEvents = events.filter(
-    (event) => new Date(event.eventDate) > currentTime,
-  );
-  const pastEvents = events.filter(
-    (event) => new Date(event.eventDate) <= currentTime,
-  );
+  const categorizeEvents = (events: EventData[]) => {
+    return events.reduce(
+      (acc, event) => {
+        const startTime = new Date(event.eventDate);
+        const endTime = new Date(startTime.getTime() + event.duration * 60000);
+
+        if (currentTime < startTime) {
+          acc.upcoming.push(event);
+        } else if (currentTime >= startTime && currentTime <= endTime) {
+          acc.ongoing.push(event);
+        } else {
+          acc.past.push(event);
+        }
+
+        return acc;
+      },
+      {
+        upcoming: [] as EventData[],
+        ongoing: [] as EventData[],
+        past: [] as EventData[],
+      },
+    );
+  };
+
+  const { upcoming, ongoing, past } = categorizeEvents(events);
 
   return (
     <Card className="h-full w-full border-none shadow-none outline-none">
@@ -63,7 +84,13 @@ const Events = ({
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="upcoming" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 space-x-2">
+          <TabsList className="grid w-full grid-cols-3 space-x-2">
+            <TabsTrigger
+              value="ongoing"
+              className="hover:bg-white hover:text-red-500 data-[state=active]:text-red-500"
+            >
+              Ongoing
+            </TabsTrigger>
             <TabsTrigger
               value="upcoming"
               className="hover:bg-white hover:text-red-500 data-[state=active]:text-red-500"
@@ -77,9 +104,9 @@ const Events = ({
               Past
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="upcoming">
-            {upcomingEvents.length > 0 ? (
-              upcomingEvents.map((event, index) => (
+          <TabsContent value="ongoing">
+            {ongoing.length > 0 ? (
+              ongoing.map((event, index) => (
                 <div key={event.id}>
                   <EventItem
                     id={event.id}
@@ -91,7 +118,30 @@ const Events = ({
                   <Separator
                     className={cn(
                       "my-2 w-full",
-                      upcomingEvents.length === index + 1 && "hidden",
+                      ongoing.length === index + 1 && "hidden",
+                    )}
+                  />
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-500">No ongoing events.</p>
+            )}
+          </TabsContent>
+          <TabsContent value="upcoming">
+            {upcoming.length > 0 ? (
+              upcoming.map((event, index) => (
+                <div key={event.id}>
+                  <EventItem
+                    id={event.id}
+                    title={event.eventName}
+                    startTime={formatEventTime(event.eventDate)}
+                    onClick={() => onSelectEvent(event)}
+                    isSelected={selectedEvent?.id === event.id}
+                  />
+                  <Separator
+                    className={cn(
+                      "my-2 w-full",
+                      upcoming.length === index + 1 && "hidden",
                     )}
                   />
                 </div>
@@ -101,8 +151,8 @@ const Events = ({
             )}
           </TabsContent>
           <TabsContent value="past">
-            {pastEvents.length > 0 ? (
-              pastEvents.map((event, index) => (
+            {past.length > 0 ? (
+              past.map((event, index) => (
                 <div key={event.id}>
                   <EventItem
                     id={event.id}
@@ -114,7 +164,7 @@ const Events = ({
                   <Separator
                     className={cn(
                       "my-2 w-full",
-                      pastEvents.length === index + 1 && "hidden",
+                      past.length === index + 1 && "hidden",
                     )}
                   />
                 </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import {
   getCsrfToken,
@@ -39,6 +40,8 @@ export default function WalletConnectButton({
   const { status, data: session, update } = useSession();
 
   const [isSigningIn, setIsSigningIn] = useState(false);
+
+  const router = useRouter();
 
   const getClientSession = async () => {
     const session = await getSession();
@@ -103,6 +106,7 @@ export default function WalletConnectButton({
   const handleWalletDisconnect = async () => {
     if (!connected && status === "authenticated") {
       await signOut({ redirect: false });
+      router.push("/");
     }
   };
 
