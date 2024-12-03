@@ -18,6 +18,9 @@ zKonnect comes as an all around package for a creator, ie, from ticketing to hos
 - **Multi-token Payment**: Currently we give options for creators to accept payments in Sol, USDC, and are willing to expand more.
 - **Audience Engagement**: Interactive features to enhance the event experience for attendees.
 
+## Working Demo Video:
+[![Creating/claiming with Blinks](https://github.com/user-attachments/assets/9fc5220c-0ef6-4119-9af2-5ec3abce9651)](https://drive.google.com/file/d/1GOELi4OVIfMHZyyOSpJe6NZMRso_4YR3/view?usp=drive_link)
+
 ## Airdrop yourself some USDC to try out
 
 Go to Circle USDC faucet and select solana Devnet:
